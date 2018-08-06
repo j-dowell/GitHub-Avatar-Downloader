@@ -8,12 +8,17 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization': token
+      'Authorization': token.GITHUB_TOKEN
     }
   };
 
   request(options, function(err, res, body) {
-    cb(err, body);
+    var contributors = JSON.parse(body);
+    var array = [];
+    for (let i = 0; i < contributors.length; i++) {
+      array.push(contributors[i].avatar_url);
+    }
+    cb(err, array);
   });
 }
 
@@ -21,3 +26,4 @@ getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err);
   console.log("Result:", result);
 });
+

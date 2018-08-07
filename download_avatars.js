@@ -6,7 +6,7 @@ if (process.argv.length === 4) {
   var inputOwner = process.argv[2];
   var inputName = process.argv[3];
 } else {
-  console.log("Please enter repository onwer and name");
+  console.log("Please enter repository owner and name");
   return;
 }
 

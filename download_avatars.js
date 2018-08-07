@@ -1,7 +1,9 @@
+// Module requirements
 var request = require('request');
 var token = require('./secrets.js');
 var fs = require('fs');
 
+// Enforcing correct command line input
 if (process.argv.length === 4) {
   var inputOwner = process.argv[2];
   var inputName = process.argv[3];
@@ -10,9 +12,9 @@ if (process.argv.length === 4) {
   return;
 }
 
-
+// Retrieves contributor avatar links based on user input
 function getRepoContributors(repoOwner, repoName, cb) {
-console.log('Welcome to the GitHub Avatar Downloader!');
+  console.log('Welcome to the GitHub Avatar Downloader!');
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
@@ -24,25 +26,23 @@ console.log('Welcome to the GitHub Avatar Downloader!');
   request(options, function(err, res, body) {
     cb(err, body);
   });
-
 }
 
-
-getRepoContributors(inputOwner, inputName, function(err, result) {
-  if (err) {
+// Creates a list of contributor avatars to pass to downloadImageByURL function
+function getContributorList(err, result) {
+    if (err) {
     console.log("Errors:", err);
   }
 
-  var contributors = JSON.parse(result);
+  var contributorsList = JSON.parse(result);
 
-  contributors.forEach(function(item) {
+  contributorsList.forEach(function(item) {
     var path = `avatars/${item.login}.jpg`;
     downloadImageByURL(item.avatar_url, path);
   });
-});
+}
 
-
-
+// Takes in URL and downloads images to file path
 function downloadImageByURL(url, filePath) {
   request.get(url)
           .on('error', function(err) {
@@ -53,3 +53,5 @@ function downloadImageByURL(url, filePath) {
             console.log('Downloaded!');
           });
 }
+
+getRepoContributors(inputOwner, inputName, getContributorList);

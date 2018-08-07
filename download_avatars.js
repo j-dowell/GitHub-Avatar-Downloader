@@ -1,6 +1,6 @@
 // Module requirements
 var request = require('request');
-var dotenv = require('dotenv').config();
+require('dotenv').config();
 var fs = require('fs');
 
 // Enforcing correct command line input
@@ -20,7 +20,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization': dotenv.GITHUB_TOKEN
+      'Authorization': process.env.GITHUB_TOKEN
     }
   };
 

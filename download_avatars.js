@@ -16,7 +16,7 @@ fs.access('avatars', function(err) {
   if (err && err.code === 'ENOENT') {
     fs.mkdir('avatars', function(error) {
       if (error) {
-        console.log('Error:', error);
+        console.log('Error: ', error);
       }
     });
   }
@@ -45,7 +45,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
   request(options, function(err, res, body) {
     var status = res.caseless.dict.status;
-    if (status === '404 Not Found') { // Checks to see if user repo information exists
+    if (status === '404 Not Found') { // Checks to see if user repo information exists *TO DO - MAKE SEPARATE FUNCTION FOR THIS*
       console.log("Please enter valid repository information");
       return;
     }
